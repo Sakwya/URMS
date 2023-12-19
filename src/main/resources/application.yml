@@ -1,0 +1,25 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/employee?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: root
+    hikari:
+      maximum-pool-size: 10 # 最大连接池数
+      max-lifetime: 1770000
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: always
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true # 驼峰命名规范
+    mapper-locations: # mapper映射文件位置
+      - classpath:mapper/*.xml
+
+files:
+  upload:
+    path: /uploads/
