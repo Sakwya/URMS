@@ -1,12 +1,14 @@
 package top.sakwya.urms.entity;
 
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author sakwya
@@ -14,7 +16,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-  public class Role implements Serializable {
+@TableName("role")
+public class Role implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

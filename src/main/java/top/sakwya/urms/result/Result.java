@@ -1,4 +1,4 @@
-package top.sakwya.urms.common;
+package top.sakwya.urms.result;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,11 +17,11 @@ public class Result {
     private Object data;
 
     public static Result success() {    //默认成功
-        return new Result(Constants.CODE_200, "", null);
+        return new Result(ResultCode.CODE_200, "", null);
     }
 
     public static Result success(Object data) { //具体成功
-        return new Result(Constants.CODE_200, "", data);
+        return new Result(ResultCode.CODE_200, "", data);
     }
 
     public static Result error(String code, String msg) {   //具体错误
@@ -29,6 +29,6 @@ public class Result {
     }
 
     public static Result error() {  //默认错误
-        return new Result(Constants.CODE_500, "系统错误", null);
+        return new Result(ResultCode.CODE_500, "系统错误", null);
     }
 }

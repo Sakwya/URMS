@@ -2,13 +2,16 @@ package top.sakwya.urms.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author sakwya
@@ -16,12 +19,13 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-  public class Menu implements Serializable {
+@TableName("menu")
+public class Menu implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-      @TableId(value = "id", type = IdType.AUTO)
-      private Integer id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
 
     private String name;
 }

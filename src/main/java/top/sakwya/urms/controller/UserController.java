@@ -1,10 +1,12 @@
 package top.sakwya.urms.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import top.sakwya.urms.common.Result;
+import top.sakwya.urms.result.Result;
 import org.springframework.web.bind.annotation.*;
 import jakarta.annotation.Resource;
+
 import java.util.List;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
 import top.sakwya.urms.service.IUserService;
@@ -14,14 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author sakwya
  * @since 2023-12-19
  */
 @RestController
-@RequestMapping("//user")
+@RequestMapping("/user")
 public class UserController {
 
     @Resource
@@ -39,7 +41,7 @@ public class UserController {
     }
 
     @PostMapping("/del/batch")
-    public boolean deleteBatch(@RequestBody List<Integer> ids){
+    public boolean deleteBatch(@RequestBody List<Integer> ids) {
         return userService.removeByIds(ids);
     }
 
@@ -55,10 +57,10 @@ public class UserController {
 
     @GetMapping("/page")
     public Result findPage(@RequestParam Integer pageNum,
-                                    @RequestParam Integer pageSize) {
+                           @RequestParam Integer pageSize) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("id");
-        return Result.success(userService.page(new Page<>(pageNum, pageSize),queryWrapper));
+        return Result.success(userService.page(new Page<>(pageNum, pageSize), queryWrapper));
     }
 
 }

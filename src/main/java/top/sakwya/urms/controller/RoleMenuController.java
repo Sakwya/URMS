@@ -7,8 +7,8 @@ import jakarta.annotation.Resource;
 import java.util.List;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
-import top.sakwya.urms.service.IRoleService;
-import top.sakwya.urms.entity.Role;
+import top.sakwya.urms.service.IRoleMenuService;
+import top.sakwya.urms.entity.RoleMenu;
 
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,44 +21,44 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2023-12-19
  */
 @RestController
-@RequestMapping("/role")
-public class RoleController {
+@RequestMapping("//role-menu")
+public class RoleMenuController {
 
     @Resource
-    private IRoleService roleService;
+    private IRoleMenuService roleMenuService;
 
     //新增或者更新
     @PostMapping
-    public Result save(@RequestBody Role role) {
-        return Result.success(roleService.saveOrUpdate(role));
+    public Result save(@RequestBody RoleMenu roleMenu) {
+        return Result.success(roleMenuService.saveOrUpdate(roleMenu));
     }
 
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
-        return Result.success(roleService.removeById(id));
+        return Result.success(roleMenuService.removeById(id));
     }
 
     @PostMapping("/del/batch")
     public boolean deleteBatch(@RequestBody List<Integer> ids){
-        return roleService.removeByIds(ids);
+        return roleMenuService.removeByIds(ids);
     }
 
     @GetMapping
     public Result findAll() {
-        return Result.success(roleService.list());
+        return Result.success(roleMenuService.list());
     }
 
     @GetMapping("/{id}")
     public Result findOne(@PathVariable Integer id) {
-        return Result.success(roleService.getById(id));
+        return Result.success(roleMenuService.getById(id));
     }
 
     @GetMapping("/page")
     public Result findPage(@RequestParam Integer pageNum,
                                     @RequestParam Integer pageSize) {
-        QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
+        QueryWrapper<RoleMenu> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("id");
-        return Result.success(roleService.page(new Page<>(pageNum, pageSize),queryWrapper));
+        return Result.success(roleMenuService.page(new Page<>(pageNum, pageSize),queryWrapper));
     }
 
 }

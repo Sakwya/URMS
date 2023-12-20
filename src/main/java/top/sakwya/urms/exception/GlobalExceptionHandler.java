@@ -1,6 +1,6 @@
 package top.sakwya.urms.exception;
 
-import top.sakwya.urms.common.Result;
+import top.sakwya.urms.result.Result;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
