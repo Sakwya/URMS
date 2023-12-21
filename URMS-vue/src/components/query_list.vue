@@ -58,6 +58,7 @@
 	import {
 		ElMessage
 	} from 'element-plus'
+	
 	export default {
 		name: "query_list",
 		props: ['attrs', 'attrs_', 'api'],
@@ -65,20 +66,28 @@
 			return {
 				formData: {},
 				dialogVisable: false,
-				query: 'show',
+				query: '',
+				request: '',
 				response: '',
-				tableData: '',
+				tableData: [],
 			}
 		},
 		methods: {
+			set_request(api) {
+				if (api == "") {
+					this.request = this.api
+				} else {
+					this.request = this.api + "/" + api
+				}
+				console.log(this.request)
+				return this.request
+			},
 			get() {
-				var _this = this
-				var request = this.api + this.query
 				this.$axios
-					.get(request, {})
+					.get(this.set_request(""), {})
 					.then(successResponse => {
 						if (successResponse.status === 200) {
-							_this.response = successResponse.data
+							this.response = successResponse.data
 							this.set_tableData()
 							ElMessage({
 								showClose: true,
@@ -88,6 +97,7 @@
 						}
 					})
 					.catch(failResponse => {
+						console.log(failResponse)
 						ElMessage({
 							showClose: true,
 							message: failResponse,
@@ -148,6 +158,7 @@
 					})
 			},
 			set_tableData() {
+				console.log(this.response)
 				var rawData = this.response.data
 				var tableData = []
 				var attrs = this.attrs
@@ -181,6 +192,15 @@
 					}
 				}
 				this.tableData = tableData
+			}
+		},
+		created() {
+			// 从 localStorage 中获取 token 信息
+			const token = localStorage.getItem('token');
+			if (token) {
+				// 如果 token 存在，则进行相应的处理
+				// 例如将 token 设置到 axios 的请求头中
+				this.$axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 			}
 		},
 		mounted() {

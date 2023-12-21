@@ -1,6 +1,6 @@
 <template>
-	<el-menu :default-active="activeIndex" mode="horizontal" :ellipsis="false">
-		<el-menu-item class="is-active" index="0">
+	<el-menu default-active="0" mode="horizontal" :ellipsis="false">
+		<el-menu-item index="0">
 			用户权限管理系统
 		</el-menu-item>
 		<div style="flex-grow: 1;" />

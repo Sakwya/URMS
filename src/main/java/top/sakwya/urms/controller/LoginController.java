@@ -14,15 +14,26 @@ import java.util.Map;
 public class LoginController {
     @Resource
     IUserService userService;
-
-    @PostMapping("/login")
+    @PostMapping(value = "/login", consumes = "application/json")
     public Result login(@RequestBody User user) {
         UserDTO dto = userService.login(user);
         return Result.success(dto);
     }
 
-    @PostMapping(value = "/register",consumes = "application/json")
-    public Result register(@RequestBody(required = false) User user) {
+    @PostMapping(value = "/login", consumes = "multipart/form-data")
+    public Result login(@RequestParam Map<String, String> formData) {
+        if (formData == null || formData.isEmpty()) {
+            return Result.error(ResultCode.CODE_400, "请正确填写所有字段。");
+        }
+        User user = new User();
+        user.setAccount(formData.get("account"));
+        user.setPassword(formData.get("password"));
+        UserDTO dto = userService.login(user);
+        return Result.success(dto);
+    }
+
+    @PostMapping(value = "/register", consumes = "application/json")
+    public Result register(@RequestBody User user) {
         return switch (userService.register(user)) {
             case 0 -> Result.error(ResultCode.CODE_400, "请正确填写所有字段。");
             case 1 -> Result.success("注册成功");
@@ -36,7 +47,6 @@ public class LoginController {
         if (formData == null || formData.isEmpty()) {
             return Result.error(ResultCode.CODE_400, "请正确填写所有字段。");
         }
-        System.out.println(formData.toString());
         User user = new User();
         user.setAccount(formData.get("account"));
         user.setUsername(formData.get("username"));

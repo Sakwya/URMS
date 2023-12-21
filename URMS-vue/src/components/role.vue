@@ -18,7 +18,7 @@
 	export default {
 		data() {
 			return {
-				api: "/role/",
+				api: "/role",
 				attrs: [{
 					prop: "role_id",
 					label: "#",

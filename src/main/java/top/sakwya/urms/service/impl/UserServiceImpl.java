@@ -2,6 +2,7 @@ package top.sakwya.urms.service.impl;
 
 import jakarta.annotation.Resource;
 import org.springframework.web.util.HtmlUtils;
+import top.sakwya.urms.result.Result;
 import top.sakwya.urms.result.ResultCode;
 import top.sakwya.urms.controller.dto.UserDTO;
 import top.sakwya.urms.entity.User;

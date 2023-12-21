@@ -1,19 +1,16 @@
 import {
-	createApp
+	createApp,
+	provide
 } from 'vue'
+
 import App from './App.vue'
 import router from './router'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-import * as axios from 'axios'
 import side_bar from './components/side_bar.vue'
 import head_bar from './components/head_bar.vue'
 import query_list from './components/query_list.vue'
-
-axios.defaults.baseURL = 'http://localhost:8081/api'
-
-
 import VMdPreview from '@kangc/v-md-editor/lib/preview';
 import '@kangc/v-md-editor/lib/style/preview.css';
 // VuePress主题以及样式（这里也可以选择github主题）
@@ -33,6 +30,7 @@ const app = createApp(App).use(router).use(ElementPlus).use(VMdPreview);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 	app.component(key, component)
 }
+import axios from './axios.js'
 app.config.globalProperties.$axios = axios
 app.mount('#app')
 app.component('side-bar', side_bar)
