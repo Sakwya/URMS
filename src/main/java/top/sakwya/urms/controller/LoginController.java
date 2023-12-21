@@ -33,7 +33,7 @@ public class LoginController {
 
     @PostMapping(value = "/register", consumes = "multipart/form-data")
     public Result register(@RequestParam Map<String, String> formData) {
-        if (formData == null || formData.size() == 0) {
+        if (formData == null || formData.isEmpty()) {
             return Result.error(ResultCode.CODE_400, "请正确填写所有字段。");
         }
         System.out.println(formData.toString());
