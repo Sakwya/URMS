@@ -74,6 +74,8 @@
 								router.push("/");
 							}, countDown.value * 1000); // 延迟 5 秒后执行跳转
 							localStorage.setItem('token', successResponse.data.data.token);
+							const expirationTime = new Date().getTime() + 3600 * 1000 * 24;
+							localStorage.setItem('expirationTime', expirationTime);
 							const messageInstance = ElMessage({
 								showClose: true,
 								message: message,
