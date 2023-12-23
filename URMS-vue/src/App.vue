@@ -9,6 +9,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
+  --el-text-color-regular:val(#555)
 }
 a{
 	text-decoration: none;

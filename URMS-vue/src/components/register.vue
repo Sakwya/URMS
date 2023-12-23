@@ -1,30 +1,32 @@
 <template>
-	<el-card id="form-body">
-		<el-card id="form-container">
-			<template #header>
-				<el-text size="large" type="primary"><el-icon>
-						<UserFilled />
-					</el-icon>用户注册</el-text>
-			</template>
-			<el-form ref="rForm" :model="registerForm" :rules="rules" label-position="left" label-width="4rem">
-				<el-form-item prop="account" label="账户:">
-					<el-input name="account" type="text" v-model="registerForm.account"></el-input>
-				</el-form-item>
-				<el-form-item prop="username" label="姓名:">
-					<el-input name="username" type="text" v-model="registerForm.username"></el-input>
-				</el-form-item>
-				<el-form-item prop="email" label="邮箱:">
-					<el-input name="email" type="email" v-model="registerForm.email"></el-input>
-				</el-form-item>
-				<el-form-item prop="password" label="密码:">
-					<el-input name="password" type="password" v-model="registerForm.password"></el-input>
-				</el-form-item>
-				<el-form-item style="width: 100%">
-					<el-button type="primary" :disabled="isDisabled" v-on:click="register">注册</el-button>
-					<el-button type="primary" plain><router-link to="login">登陆</router-link></el-button>
-				</el-form-item>
-			</el-form></el-card>
-	</el-card>
+	<div id="bg">
+		<el-card id="form-body">
+			<el-card id="form-container">
+				<template #header>
+					<el-text size="large" type="primary"><el-icon>
+							<UserFilled />
+						</el-icon>用户注册</el-text>
+				</template>
+				<el-form ref="rForm" :model="registerForm" :rules="rules" label-position="left" label-width="4rem">
+					<el-form-item prop="account" label="账户:">
+						<el-input name="account" type="text" v-model="registerForm.account"></el-input>
+					</el-form-item>
+					<el-form-item prop="username" label="姓名:">
+						<el-input name="username" type="text" v-model="registerForm.username"></el-input>
+					</el-form-item>
+					<el-form-item prop="email" label="邮箱:">
+						<el-input name="email" type="email" v-model="registerForm.email"></el-input>
+					</el-form-item>
+					<el-form-item prop="password" label="密码:">
+						<el-input name="password" type="password" v-model="registerForm.password"></el-input>
+					</el-form-item>
+					<el-form-item style="width: 100%">
+						<el-button type="primary" :disabled="isDisabled" v-on:click="register">注册</el-button>
+						<el-button type="primary" plain><router-link to="login">登陆</router-link></el-button>
+					</el-form-item>
+				</el-form></el-card>
+		</el-card>
+	</div>
 </template>
 <script>
 	import {
@@ -116,20 +118,23 @@
 						})
 					})
 			}
+			const body = document.documentElement || document.body;
 			const handleThrottledMouseMove = throttle((event) => {
 				// 处理鼠标移动事件
-				const body = document.documentElement || document.body;
 				const mouseX = event.pageX;
 				const mouseY = event.pageY;
-				const percentX = (mouseX / body.clientWidth) * 20 + 40; // 计算 X 轴百分比
-				const percentY = (mouseY / body.clientHeight) * 20 + 40; // 计算 Y 轴百分比
-
-				let container = document.getElementById("form-container");
-				container.style.top = `${percentY}%`;
-				container.style.left = `${percentX}%`;
-				document.getElementById("form-body").style.backgroundPosition =
-					`${percentX*0.2+40}% ${percentY*0.2+40}%`;
-			}, 50); // 设置节流的时间间隔为 200ms
+				const container = document.getElementById("form-container");
+				const percentX = (mouseX / body.clientWidth) * 20 - 10; // 计算 X 轴百分比
+				const percentY = (mouseY / body.clientHeight) * 20 - 10; // 计算 Y 轴百分比
+				container.style.top = `${percentY*0.2+50}%`;
+				container.style.left = `${percentX*0.2+50}%`;
+				let r = (percentX) * (percentX) + (percentY) * (percentY);
+				r = (r > 10) ? r : 0;
+				document.getElementById("form-body").style.filter = `blur(${r}px)`;
+				document.getElementById("bg")
+					.style.backgroundPosition =
+					`${percentX+50}% ${percentY+50}%`;
+			}, 100);
 			onMounted(() => {
 				document.onmousemove = handleThrottledMouseMove;
 			});
@@ -151,13 +156,22 @@
 	}
 </script>
 <style>
+	#bg {
+		background: url("../static/bg.png") no-repeat;
+		background-position: 50% 50%;
+		background-size: 110% 110%;
+		width: 100vw;
+		height: 100vh;
+		transition: background-position 0.5s ease-out;
+	}
+
 	#form-body {
 		background: url("../static/title.png") no-repeat;
 		background-position: 50% 50%;
 		height: 100%;
 		width: 100%;
 		position: fixed;
-		transition: background-position 0.5s ease-out;
+		transition: filter 0.5s ease;
 	}
 
 	#form-container {
@@ -168,8 +182,13 @@
 		left: 50%;
 		transform: translate(-50%, -50%);
 		width: 350px;
-		background: #eeee;
-		box-shadow: 0 0 0.5rem #8888;
-		transition: top 0.5s ease-out, left 0.5s ease-out;
+		background: #fffa;
+		opacity: 0;
+		box-shadow: 0 0 0.5rem #fff;
+		transition: top 0.5s ease-out, left 0.5s ease-out, opacity 0.5s ease-out;
+	}
+
+	#form-container:hover {
+		opacity: 1;
 	}
 </style>
