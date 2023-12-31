@@ -18,9 +18,9 @@
 				<el-menu-item index="2-2"><router-link to="/role"><el-icon>
 						<Avatar />
 					</el-icon><span>角色维护</span></router-link></el-menu-item>
-				<el-menu-item index="2-3"><el-icon>
+				<el-menu-item index="2-3"><router-link to="/menu"><el-icon>
 						<Briefcase />
-					</el-icon><span>菜单维护</span></el-menu-item>
+					</el-icon><span>菜单维护</span></router-link></el-menu-item>
 			</el-sub-menu>
 			<el-sub-menu index="3">
 				<template #title>

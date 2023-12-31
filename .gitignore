@@ -6,3 +6,4 @@ build/
 out/
 URMS-vue/node_modules/
 URMS-vue/dist/
+.idea/misc.xml

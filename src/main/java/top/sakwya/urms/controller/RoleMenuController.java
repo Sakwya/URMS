@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2023-12-19
  */
 @RestController
-@RequestMapping("//role-menu")
+@RequestMapping("/role-menu")
 public class RoleMenuController {
 
     @Resource
@@ -30,12 +30,12 @@ public class RoleMenuController {
     //新增或者更新
     @PostMapping
     public Result save(@RequestBody RoleMenu roleMenu) {
-        return Result.success(roleMenuService.saveOrUpdate(roleMenu));
+        return Result.success(roleMenuService.insertEntry(roleMenu));
     }
 
-    @DeleteMapping("/{id}")
-    public Result delete(@PathVariable Integer id) {
-        return Result.success(roleMenuService.removeById(id));
+    @PostMapping("/del")
+    public Result delete(@RequestBody RoleMenu roleMenu) {
+        return Result.success(roleMenuService.deleteEntry(roleMenu.getRid(),roleMenu.getMid()));
     }
 
     @PostMapping("/del/batch")
@@ -48,9 +48,9 @@ public class RoleMenuController {
         return Result.success(roleMenuService.list());
     }
 
-    @GetMapping("/{id}")
-    public Result findOne(@PathVariable Integer id) {
-        return Result.success(roleMenuService.getById(id));
+    @GetMapping("/{rid}")
+    public Result findOne(@PathVariable Integer rid) {
+        return Result.success(roleMenuService.getByRid(rid));
     }
 
     @GetMapping("/page")

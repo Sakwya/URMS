@@ -13,4 +13,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IRoleMenuService extends IService<RoleMenu> {
 
+    Integer insertEntry(RoleMenu roleMenu);
+
+    Integer deleteEntry(Integer rid, Integer mid);
+
+    RoleMenu[] getByRid(Integer rid);
 }

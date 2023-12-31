@@ -51,10 +51,10 @@
 							:width="c.width"></el-table-column>
 						<el-table-column label="操作" width='200' fixed="right">
 							<template #default="scope">
-								<el-button type="success" @click="assign(scope.row.id)"><el-icon>
+								<el-button type="success" @click="edit(scope.$index)"><el-icon>
 										<Edit />
 									</el-icon></el-button>
-								<el-button type="primary" @click="edit(scope.$index)"><el-icon>
+								<el-button type="primary" @click="assign(scope.row.id)"><el-icon>
 										<EditPen />
 									</el-icon></el-button>
 								<el-button type="danger" @click="deleteSingle(scope.row.id);"><el-icon>
@@ -111,20 +111,6 @@
 						</span>
 					</template>
 				</el-dialog>
-				<el-dialog title="分配角色" v-model="assignVisable" width="20rem"
-					:style="{borderRadius:'10px',border:'0.125rem solid var(--el-color-primary)'}">
-					<el-checkbox-group v-model="checkList">
-						<el-checkbox v-for="(item,index) in role" :label="item.name"></el-checkbox>
-					</el-checkbox-group>
-					<template #footer>
-						<span>
-							<el-button @click="assignVisable = false">取消</el-button>
-							<el-button type="primary" @click="doAssign();assignVisable = false">
-								提交
-							</el-button>
-						</span>
-					</template>
-				</el-dialog>
 			</el-main>
 		</el-container>
 	</el-container>
@@ -144,50 +130,32 @@
 		ElMessage,
 		ElMessageBox
 	} from 'element-plus'
-	const api = "/user";
+	const api = "/menu";
 	const attrs = [{
 			prop: "id",
 			label: "ID",
 			width: "60",
 		},
 		{
-			prop: "account",
-			label: "账号",
-		}, {
-			prop: "username",
-			label: "名称",
-		}, {
-			prop: "email",
-			label: "邮箱地址",
+			prop: "name",
+			label: "功能名",
 		}
 	];
 	const formData = reactive({
 		label: {
-			account: "账号",
-			username: "名称",
-			password: "密码",
-			email: "邮箱地址"
+			name: "功能名"
 		},
 		data: {
-			account: "",
-			username: "",
-			password: "",
-			email: ""
+			name: ""
 		}
 	});
 	const editData = reactive({
 		label: {
-			account: "账号",
-			username: "名称",
-			password: "密码",
-			email: "邮箱地址"
+			name: "功能名"
 		},
 		data: {
 			id: "",
-			account: "",
-			username: "",
-			password: "",
-			email: ""
+			name: ""
 		}
 	})
 	const editDialogVisable = ref(false);
@@ -251,7 +219,7 @@
 	const table = ref()
 	const selectedRow = computed(() => table.value.getSelectionRows())
 	const getAll = () => {
-		axios.get('user').then(rspn => {
+		axios.get('menu').then(rspn => {
 			tableData.value = rspn.data.data;
 		}).catch(error => {
 			console.log(error)
@@ -266,7 +234,7 @@
 
 	}
 	const save = () => {
-		axios.post('user', JSON.parse(JSON.stringify(formData.data)))
+		axios.post('menu', JSON.parse(JSON.stringify(formData.data)))
 			.then(rspn => {
 				ElMessage({
 					type: 'success',
@@ -285,7 +253,7 @@
 			})
 	}
 	const updata = () => {
-		axios.post('user', JSON.parse(JSON.stringify(editData.data)))
+		axios.post('menu', JSON.parse(JSON.stringify(editData.data)))
 			.then(rspn => {
 				ElMessage({
 					type: 'success',
@@ -356,7 +324,7 @@
 		getAll()
 	}
 	const deleteById = (id) => {
-		axios.delete(`user/${id}`)
+		axios.delete(`menu/${id}`)
 			.then(rspn => {
 				if (!rspn.data.data) {
 					ElMessage({
@@ -368,84 +336,13 @@
 			.catch(error => {
 				ElMessage({
 					type: 'error',
-					message: error
+					message: error.data
 				})
 			})
 	}
-	const role = ref([])
-	var rid = {}
-	var rname = {}
-	var uid = null
-	var originRole = []
-	const checkList = ref()
-	const assignVisable = ref(false)
-	const assign = (id) => {
-		uid = id
-		axios(`role`).then(rspn => {
-			role.value = rspn.data.data
-			let roles = rspn.data.data;
-			rid = {}
-			rname = {}
-			for (let i = 0; i < roles.length; i++) {
-				let role = roles[i]
-				rid[role['name']] = role['id']
-				rname[role['id']] = role['name']
-			}
-			axios(`user-role/${id}`).then(rspn => {
-				if (rspn.data.data != null) {
-					let roles = rspn.data.data
-					originRole = []
-					for (let i = 0; i < roles.length; i++) {
-						originRole[i] = rname[roles[i].rid]
-					}
-					checkList.value = originRole
-				}
-			}).catch(error => {
-				ElMessage({
-					type: 'error',
-					message: error
-				})
-				assignVisable.value = false
-			})
-			assignVisable.value = true
-		}).catch(error => {
-			ElMessage({
-				type: 'error',
-				message: error
-			})
-			assignVisable.value = false
-		})
-	}
-	const doAssign = () => {
-		let checked = checkList.value
-		let append = checked.filter(x => !originRole.includes(x))
-		let removed = originRole.filter(x => !checked.includes(x))
-		for (let i = 0; i < append.length; i++) {
-			axios.post(`user-role`, fixed(append[i])).catch(error => {
-				ElMessage({
-					type: 'error',
-					message: error
-				})
-			})
-		}
-		for (let i = 0; i < removed.length; i++) {
-			axios.post(`user-role/del`, fixed(removed[i])).catch(error => {
-				ElMessage({
-					type: 'error',
-					message: error
-				})
-			})
-		}
-	}
-	const fixed = (name) => {
-		return {
-			rid: rid[name],
-			uid: uid
-		}
-	}
+	window.data = tableData
 	onMounted(() => {
-		getAll()
-
+		getAll();
 	});
 </script>
 

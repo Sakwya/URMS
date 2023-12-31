@@ -10,6 +10,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
@@ -37,13 +38,36 @@ public class UserController {
     //新增或者更新
     @PostMapping(consumes = "application/json")
     public Result save(@RequestBody User user) {
+        if (user.getId() != null) {
+            User updateUser = userService.getById(user.getId());
+            if (updateUser != null) {
+//                System.out.println("updateUser:" + updateUser.getPassword());
+//                System.out.println("user:" + user.getPassword());
+//                System.out.println(Objects.equals(user.getPassword(), updateUser.getPassword()));
+                if (Objects.equals(user.getPassword(), updateUser.getPassword())) {
+                    String username = user.getUsername();
+                    String password = user.getPassword();
+                    String account = user.getAccount();
+                    String email = user.getEmail();
+                    username = HtmlUtils.htmlEscape(username);
+                    account = HtmlUtils.htmlEscape(account);
+                    email = HtmlUtils.htmlEscape(email);
+                    password = HtmlUtils.htmlEscape(password);
+                    user.setUsername(username);
+                    user.setAccount(account);
+                    user.setPassword(password);
+                    user.setEmail(email);
+                    return Result.success(userService.saveOrUpdate(user));
+                }
+            }
+        }
         String username = user.getUsername();
         String password = hash(user.getPassword());
         String account = user.getAccount();
-        String email = user.getAccount();
+        String email = user.getEmail();
         username = HtmlUtils.htmlEscape(username);
         account = HtmlUtils.htmlEscape(account);
-        email= HtmlUtils.htmlEscape(email);
+        email = HtmlUtils.htmlEscape(email);
         user.setUsername(username);
         user.setAccount(account);
         user.setPassword(password);
