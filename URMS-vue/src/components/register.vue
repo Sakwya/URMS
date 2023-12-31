@@ -42,7 +42,7 @@
 		watch,
 		computed
 	} from 'vue';
-	import axios from 'axios'
+	import axios from 'axios.js'
 	import throttle from 'lodash/throttle'; // 导入节流函数
 	export default {
 		setup() {

@@ -7,8 +7,7 @@
 							<UserFilled />
 						</el-icon>用户登录</el-text>
 				</template>
-				<el-form ref="lForm" :model="loginForm" :rules="rules" label-position="left" label-width="4rem"
-					v-loading="loading">
+				<el-form ref="lForm" :model="loginForm" :rules="rules" label-position="left" label-width="4rem">
 					<el-form-item prop="account" label="账户:">
 						<el-input name="account" type="text" v-model="loginForm.account"></el-input>
 					</el-form-item>
@@ -36,7 +35,7 @@
 		onMounted,
 		watch
 	} from 'vue';
-	import axios from 'axios'
+	import axios from '../axios.js'
 	import throttle from 'lodash/throttle'; // 导入节流函数
 	export default {
 		setup() {

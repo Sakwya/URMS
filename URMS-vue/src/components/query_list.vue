@@ -58,7 +58,7 @@
 	import {
 		ElMessage
 	} from 'element-plus'
-	
+
 	export default {
 		name: "query_list",
 		props: ['attrs', 'attrs_', 'api'],
