@@ -49,7 +49,7 @@
 						<el-table-column type="selection"></el-table-column>
 						<el-table-column v-for="(c,index) in attrs" :key="index" :prop="c.prop" :label="c.label"
 							:width="c.width"></el-table-column>
-						<el-table-column label="操作" width='200' fixed="right">
+						<el-table-column v-if="menus.m5" label="操作" width='200' fixed="right">
 							<template #default="scope">
 								<el-button type="success" @click="assign(scope.row.id)"><el-icon>
 										<Edit />
@@ -144,6 +144,14 @@
 		ElMessage,
 		ElMessageBox
 	} from 'element-plus'
+	import menus from "./menus.js"
+	import {
+		useRouter
+	} from 'vue-router'
+	const router = useRouter();
+	if (!menus.m4) {
+		router.push('/')
+	}
 	const api = "/role";
 	const attrs = [{
 		prop: "id",
@@ -401,7 +409,11 @@
 		let append = checked.filter(x => !originmenu.includes(x))
 		let removed = originmenu.filter(x => !checked.includes(x))
 		for (let i = 0; i < append.length; i++) {
-			axios.post(`role-menu`, fixed(append[i])).catch(error => {
+			axios.post(`role-menu`, fixed(append[i])).then(rspn => {
+				if (i == append.length - 1) {
+					getMenu()
+				}
+			}).catch(error => {
 				ElMessage({
 					type: 'error',
 					message: error
@@ -409,7 +421,11 @@
 			})
 		}
 		for (let i = 0; i < removed.length; i++) {
-			axios.post(`role-menu/del`, fixed(removed[i])).catch(error => {
+			axios.post(`role-menu/del`, fixed(removed[i])).then(rspn => {
+				if (i == removed.length - 1) {
+					getMenu()
+				}
+			}).catch(error => {
 				ElMessage({
 					type: 'error',
 					message: error
@@ -422,6 +438,34 @@
 			mid: mid[name],
 			rid: rid
 		}
+	}
+	const getMenu = () => {
+		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+		if (userInfo && userInfo.id) {
+			axios.get(`menu/${userInfo.id}`)
+				.then(rspn => {
+					let menus = rspn.data.data
+					let menuIds = []
+					for (let i = 0; i < menus.length; i++) {
+						menuIds.push(menus[i].id)
+					}
+					localStorage.setItem('menu', JSON.stringify(menuIds))
+					setMenu()
+				})
+				.catch(error => console.log(error))
+		} else {
+			localStorage.clear()
+			router.push('login')
+		}
+	}
+	const setMenu = () => {
+		const menuIds = JSON.parse(localStorage.getItem('menu'))
+		menus.m1 = menuIds.includes(1)
+		menus.m2 = menuIds.includes(2)
+		menus.m3 = menuIds.includes(3)
+		menus.m4 = menuIds.includes(4)
+		menus.m5 = menuIds.includes(5)
+		menus.m6 = menuIds.includes(6)
 	}
 	window.data = tableData
 	onMounted(() => {

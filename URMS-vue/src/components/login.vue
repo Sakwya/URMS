@@ -74,6 +74,8 @@
 							const timeoutId = setTimeout(() => {
 								router.push("/");
 							}, countDown.value * 1000); // 延迟 5 秒后执行跳转
+							localStorage.clear()
+							localStorage.setItem('userInfo', JSON.stringify(successResponse.data.data))
 							localStorage.setItem('token', successResponse.data.data.token);
 							const expirationTime = new Date().getTime() + 3600 * 1000 * 24;
 							localStorage.setItem('expirationTime', expirationTime);
@@ -116,6 +118,10 @@
 				const mouseX = event.pageX;
 				const mouseY = event.pageY;
 				const container = document.getElementById("form-container");
+				if (container == null) {
+					document.onmousemove = null;
+					return
+				}
 				const percentX = (mouseX / body.clientWidth) * 20 - 10; // 计算 X 轴百分比
 				const percentY = (mouseY / body.clientHeight) * 20 - 10; // 计算 Y 轴百分比
 				container.style.top = `${percentY*0.2+50}%`;

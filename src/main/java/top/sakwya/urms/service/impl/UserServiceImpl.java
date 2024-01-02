@@ -98,10 +98,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             String token = TokenUtils.genToken(user.getId().toString(), user.getPassword());
             UserDTO userDTO;
             userDTO = new UserDTO();
+            userDTO.setId(user.getId());
             userDTO.setAccount(user.getAccount());
             userDTO.setEmail(user.getEmail());
             userDTO.setUsername(user.getUsername());
             userDTO.setToken(token);
+
             return userDTO;
         } else {
             throw new ServiceException(ResultCode.CODE_600, "用户名或密码错误");

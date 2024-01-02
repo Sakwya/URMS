@@ -124,6 +124,10 @@
 				const mouseX = event.pageX;
 				const mouseY = event.pageY;
 				const container = document.getElementById("form-container");
+				if (container == null) {
+					document.onmousemove = null;
+					return
+				}
 				const percentX = (mouseX / body.clientWidth) * 20 - 10; // 计算 X 轴百分比
 				const percentY = (mouseY / body.clientHeight) * 20 - 10; // 计算 Y 轴百分比
 				container.style.top = `${percentY*0.2+50}%`;

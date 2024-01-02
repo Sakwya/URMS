@@ -1,5 +1,6 @@
 package top.sakwya.urms.service;
 
+import jakarta.annotation.Resource;
 import top.sakwya.urms.entity.Menu;
 import com.baomidou.mybatisplus.extension.service.IService;
 

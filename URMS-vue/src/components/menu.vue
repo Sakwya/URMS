@@ -35,14 +35,14 @@
 							</el-icon>
 							查询</el-button> -->
 						<div style="flex-grow: 1;" />
-						<el-button type="primary" @click="dialogVisable=true"><el-icon>
+<!-- 						<el-button type="primary" @click="dialogVisable=true"><el-icon>
 								<Plus />
 							</el-icon>
 							新增</el-button>
 						<el-button type="danger" @click="deleteRows()"><el-icon>
 								<Close />
 							</el-icon>
-							删除</el-button>
+							删除</el-button> -->
 					</div>
 					<el-divider />
 					<el-table :data="tableDataByPage" border stripe ref="table">
@@ -51,15 +51,15 @@
 							:width="c.width"></el-table-column>
 						<el-table-column label="操作" width='200' fixed="right">
 							<template #default="scope">
-								<el-button type="success" @click="edit(scope.$index)"><el-icon>
+<!-- 								<el-button type="success" @click="assign(scope.row.id)"><el-icon>
 										<Edit />
-									</el-icon></el-button>
-								<el-button type="primary" @click="assign(scope.row.id)"><el-icon>
+									</el-icon></el-button> -->
+								<el-button type="primary" @click="edit(scope.$index)"><el-icon>
 										<EditPen />
 									</el-icon></el-button>
-								<el-button type="danger" @click="deleteSingle(scope.row.id);"><el-icon>
+<!-- 								<el-button type="danger" @click="deleteSingle(scope.row.id);"><el-icon>
 										<Close />
-									</el-icon></el-button>
+									</el-icon></el-button> -->
 							</template>
 						</el-table-column>
 					</el-table>
@@ -130,6 +130,14 @@
 		ElMessage,
 		ElMessageBox
 	} from 'element-plus'
+	import menus from "./menus.js"
+	import {
+		useRouter
+	} from 'vue-router'
+	const router = useRouter();
+	if (!menus.m6) {
+		router.push('/')
+	}
 	const api = "/menu";
 	const attrs = [{
 			prop: "id",
@@ -309,7 +317,6 @@
 				}
 			)
 			.then(() => {
-
 				deleteById(id)
 				ElMessage({
 					type: 'success',

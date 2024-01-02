@@ -35,11 +35,11 @@
 							</el-icon>
 							查询</el-button> -->
 						<div style="flex-grow: 1;" />
-						<el-button type="primary" @click="dialogVisable=true"><el-icon>
+						<el-button type="primary" v-if="menus.m2" @click="dialogVisable=true"><el-icon>
 								<Plus />
 							</el-icon>
 							新增</el-button>
-						<el-button type="danger" @click="deleteRows()"><el-icon>
+						<el-button type="danger" v-if="menus.m2" @click="deleteRows()"><el-icon>
 								<Close />
 							</el-icon>
 							删除</el-button>
@@ -49,15 +49,15 @@
 						<el-table-column type="selection"></el-table-column>
 						<el-table-column v-for="(c,index) in attrs" :key="index" :prop="c.prop" :label="c.label"
 							:width="c.width"></el-table-column>
-						<el-table-column label="操作" width='200' fixed="right">
+						<el-table-column v-if="menus.m2||menus.m3" label="操作" width='200' fixed="right">
 							<template #default="scope">
-								<el-button type="success" @click="assign(scope.row.id)"><el-icon>
+								<el-button type="success" v-if="menus.m3" @click="assign(scope.row.id)"><el-icon>
 										<Edit />
 									</el-icon></el-button>
-								<el-button type="primary" @click="edit(scope.$index)"><el-icon>
+								<el-button type="primary" v-if="menus.m2" @click="edit(scope.$index)"><el-icon>
 										<EditPen />
 									</el-icon></el-button>
-								<el-button type="danger" @click="deleteSingle(scope.row.id);"><el-icon>
+								<el-button type="danger" v-if="menus.m2" @click="deleteSingle(scope.row.id);"><el-icon>
 										<Close />
 									</el-icon></el-button>
 							</template>
@@ -144,6 +144,12 @@
 		ElMessage,
 		ElMessageBox
 	} from 'element-plus'
+	import menus from "./menus.js"
+	import {useRouter} from 'vue-router'
+	const router = useRouter();
+	if (!menus.m1){
+		router.push('/')
+	}
 	const api = "/user";
 	const attrs = [{
 			prop: "id",
