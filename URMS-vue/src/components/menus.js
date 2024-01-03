@@ -2,10 +2,7 @@ import {
 	reactive
 } from "vue"
 import axios from "../axios.js";
-import {
-	useRouter
-} from 'vue-router'
-const router = useRouter()
+import router from "../router/index.js"
 const getMenu = () => {
 	const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 	if (userInfo && userInfo.id) {
@@ -22,6 +19,7 @@ const getMenu = () => {
 			.catch(error => console.log(error))
 	} else {
 		localStorage.clear()
+		console.log(router)
 		router.push('login')
 	}
 }
@@ -44,9 +42,11 @@ const setMenu = () => {
 	menus.m12 = menuIds.includes(12)
 	menus.m13 = menuIds.includes(13)
 }
+console.log(menus)
 if (!localStorage.getItem('menu')) {
 	getMenu()
 } else {
 	setMenu()
 }
+console.log(menus)
 export default menus;
